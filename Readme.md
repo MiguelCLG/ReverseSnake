@@ -1,3 +1,9 @@
+# Reverse Snake
+
+Este é um jogo inovador e emocionante chamado "Reverse Snake". Ao contrário do jogo clássico Snake.
+
+
+
 Here is the first draft of the readme.
 
 Comandos de git:
