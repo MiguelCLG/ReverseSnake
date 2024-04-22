@@ -18,7 +18,7 @@ public class GameMasterModel
     public static GameMasterModel GetInstance(string value)
     {
         /* 
-         * criamos um singleton neste caso porque apenas existirá apenas um Model de GameMaster e podemos criar ligações entre o Model, View e Controller mais fácilmente 
+         * criamos um singleton neste caso porque apenas existira apenas um Model de GameMaster e podemos criar ligacoes entre o Model, View e Controller mais facilmente 
          * usamos _lock para poder fazer o singleton "thread-safe"
          * https://refactoring.guru/pt-br/design-patterns/singleton/csharp/example#example-1
          */
@@ -36,8 +36,8 @@ public class GameMasterModel
         }
     }
 
-    public void ConstroiJogo()
-    {
-        //Implementação do Constroi Jogo
-    }
+    public void ConstroiJogo() { }
+    public void EscolhePosicaoComida() { }
+    public void AumentaPontuacao() { }
+
 }
