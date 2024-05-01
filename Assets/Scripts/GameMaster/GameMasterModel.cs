@@ -11,8 +11,8 @@ public class GameMasterModel
 
     private GameMasterModel()
     {
-        controller = new GameMasterController();
-        view = new GameMasterView();
+        controller = GameMasterController.GetInstance("controller");
+        view = GameMasterView.GetInstance("view");
     }
 
     public static GameMasterModel GetInstance(string value)
@@ -27,13 +27,11 @@ public class GameMasterModel
         {
             lock (_lock)
             {
-                if(instance == null)
-                {
-                    instance = new GameMasterModel();
-                    instance.Value = value;
-                }
+                instance = new GameMasterModel();
+                instance.Value = value;
             }
         }
+        return instance;
     }
 
     public void ConstroiJogo() { }

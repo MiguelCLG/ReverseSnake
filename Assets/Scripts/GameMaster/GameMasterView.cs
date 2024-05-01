@@ -10,7 +10,7 @@ public class GameMasterView
 
     private GameMasterView()
     {
-        model = new GameMasterModel();
+        model = GameMasterModel.GetInstance("model");
     }
 
     public static GameMasterView GetInstance(string value)
@@ -25,13 +25,11 @@ public class GameMasterView
         {
             lock (_lock)
             {
-                if (instance == null)
-                {
-                    instance = new GameMasterView();
-                    instance.Value = value;
-                }
+                instance = new GameMasterView();
+                instance.Value = value;
             }
         }
+        return instance;
     }
 
     public void MostraJogo() { }
