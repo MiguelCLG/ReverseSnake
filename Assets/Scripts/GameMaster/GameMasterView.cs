@@ -1,36 +1,27 @@
 using System;
 using System.Threading;
+using UnityEngine;
 
-public class GameMasterView
+public class GameMasterView: MonoBehaviour
 {
     private GameMasterModel model;
-    private static GameMasterView instance;
-    private static readonly object _lock = new object();
-    public string Value { get; set; }
+    private static GameMasterView Instance;
 
-    private GameMasterView()
+    private void Awake()
     {
-        model = GameMasterModel.GetInstance("model");
-    }
-
-    public static GameMasterView GetInstance(string value)
-    {
-        /* 
-         * criamos um singleton neste caso porque apenas existira apenas uma View de GameMaster e podemos criar ligacoes entre o Model, View e Controller mais facilmente 
-         * usamos _lock para poder fazer o singleton "thread-safe"
-         * https://refactoring.guru/pt-br/design-patterns/singleton/csharp/example#example-1
-         */
-
-        if (instance == null)
+        if (Instance == null)
         {
-            lock (_lock)
-            {
-                instance = new GameMasterView();
-                instance.Value = value;
-            }
+            Instance = this;
         }
-        return instance;
+        else
+            Destroy(this);
     }
+
+    private void Start()
+    {
+        model = GetComponent<GameMasterModel>();
+    }
+
 
     public void MostraJogo() { }
     public void MostraEstado() { }
