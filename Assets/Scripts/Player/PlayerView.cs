@@ -5,7 +5,6 @@ using UnityEngine.UIElements;
 
 public class PlayerView: MonoBehaviour
 {
-    private Transform tranform;
     private PlayerModel model;
     private static PlayerView instance;
 
@@ -18,8 +17,6 @@ public class PlayerView: MonoBehaviour
     public void Start()
     {
         model = GetComponent<PlayerModel>();
-        tranform = GetComponent<Transform>();
-  
     }
 
     // Método para atualizar a visualização do jogador na interface do usuário.
@@ -27,8 +24,9 @@ public class PlayerView: MonoBehaviour
     {
         Vector3 pos = new Vector3(newPosition.x, newPosition.y, 0);
         // Placeholder para código de renderização real. Poderia atualizar a posição do jogador na UI.
-        Debug.Log($"Player at position {model.position} with score {model.score}");
-        tranform.position += pos;
+        Debug.Log($"Player at position {transform.position} with score {model.score}");
+
+        transform.position = pos;
     }
 
     // Método para exibir o status do jogador como morto na interface do usuário.
