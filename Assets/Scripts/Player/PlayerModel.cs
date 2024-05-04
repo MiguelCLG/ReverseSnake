@@ -6,7 +6,6 @@ public class PlayerModel: MonoBehaviour
 {
     private PlayerView view;
     private PlayerController controller; 
-    public Vector2 position;
     private bool isAlive = true;
     public int score = 0;
     private static PlayerModel instance;
@@ -20,7 +19,6 @@ public class PlayerModel: MonoBehaviour
     {
         view = GetComponent<PlayerView> ();
         controller = GetComponent<PlayerController>();
-        position = GetComponent<Transform>().position;
 
     }
 
@@ -31,8 +29,8 @@ public class PlayerModel: MonoBehaviour
         {
             return;
         }
-
-        Vector2 newPosition = position + direction;
+        
+        Vector2 newPosition = new Vector2(transform.position.x, transform.position.y) + direction;
         view.DisplayPlayer( newPosition );
     }
 
