@@ -18,7 +18,12 @@ public class PlayerController: MonoBehaviour
     {
         model = GetComponent<PlayerModel>();
         view = GetComponent<PlayerView>();
+        SubscribeToEvents();
+    }
 
+    private void SubscribeToEvents()
+    {
+        EventSubscriber.SubscribeToEvent("OnFoodEaten", OnFoodEaten);
     }
 
     public void Update()
@@ -51,5 +56,18 @@ public class PlayerController: MonoBehaviour
         // Atualiza o estado para morto e atualiza a visualização
         model.Die();
         view.DisplayDeath();
+    }
+
+
+    //Event Handlers
+
+    private void OnFoodEaten(object sender, object obj)
+    {
+        if (obj is GameObject gameObj)
+            {
+            if (gameObj.tag == "Player")
+                PlayerEatsFood(model.scoreToAdd);
+            Debug.Log($"Player: OnFoodEaten was called by {gameObj.tag}");
+        }
     }
 }

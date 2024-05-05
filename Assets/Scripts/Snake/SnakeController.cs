@@ -25,11 +25,22 @@ public class SnakeController : MonoBehaviour
     {
         view = GetComponent<SnakeView>();
         model = GetComponent<SnakeModel>();
+        RegisterEvents();
     }
 
+    private void RegisterEvents()
+    {
+        EventSubscriber.SubscribeToEvent("OnFoodEaten", OnFoodEaten);
+    }
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    private void OnFoodEaten(object sender, object obj)
+    {
+        if(obj is GameObject gO)
+            Debug.Log($"Snake: OnFoodEaten was called by {gO.tag}");
     }
 }

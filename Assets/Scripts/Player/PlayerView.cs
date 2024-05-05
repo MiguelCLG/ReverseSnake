@@ -24,7 +24,7 @@ public class PlayerView: MonoBehaviour
     {
         Vector3 pos = new Vector3(newPosition.x, newPosition.y, 0);
         // Placeholder para código de renderização real. Poderia atualizar a posição do jogador na UI.
-        Debug.Log($"Player at position {transform.position} with score {model.score}");
+        Debug.Log($"Player at position {transform.position} with score {model.GetScore()}");
 
         transform.position = pos;
     }
