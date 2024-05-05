@@ -1,18 +1,15 @@
 using System;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameMasterController: MonoBehaviour
 {
-    [SerializeField] private Vector2 gridSize = Vector2.zero;
-    [SerializeField] private Vector2 cellSize = Vector2.zero;
 
-    Transform gameMasterTransform;
     private GameMasterModel model;
     private GameMasterView view;
     private static GameMasterController Instance { get; set; }
 
-    private GameGrid grid;
   
     private void Awake()
     {
@@ -31,63 +28,53 @@ public class GameMasterController: MonoBehaviour
     {
         model = GetComponent<GameMasterModel>();
         view = GetComponent<GameMasterView>();
-        gameMasterTransform = GetComponent<Transform>();
-        grid = new GameGrid(gridSize, cellSize);
 
-        DrawGrid();
         StartGame();
     }
+
+    public void ApresentaNovoEstado() { }
+
+    public void Restart()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+    public void StartGame()
+    {
+        view.CloseWindow();
+        model.ConstroiJogo();
+    }
+
+    // Events
 
     private void RegisterEvents()
     {
         EventRegistry.RegisterEvent("OnFoodEaten");
         EventSubscriber.SubscribeToEvent("OnFoodEaten", OnFoodEaten);
+
+        EventRegistry.RegisterEvent("OnPlayerMove");
+        EventSubscriber.SubscribeToEvent("OnPlayerMove", OnPlayerMove);
     }
-    private void DrawGrid()
+    private void OnFoodEaten(object sender, object obj)
     {
-        int rowStart = Mathf.RoundToInt(gameMasterTransform.position.x);
-        int columnStart = Mathf.RoundToInt(gameMasterTransform.position.y);
-
-        for (int row = rowStart; row < rowStart + (gridSize.y * cellSize.y); row += (int)cellSize.y)
+        if (obj is GameObject gO)
         {
-            for (int column = columnStart; column < columnStart + (gridSize.x * cellSize.x); column+=(int)cellSize.x)
-            {
-                var color = Color.white;
-
-                // Direita
-                var start = new Vector2(row, column);
-                var end = new Vector2(row, column + cellSize.x);
-                Debug.DrawLine(start, end, color, 100f);
-
-                // Esquerda
-                start = new Vector2(row + cellSize.y, column);
-                end = new Vector2(row + cellSize.y, column + cellSize.x);
-                Debug.DrawLine(start, end, color, 100f);
-
-                // Baixo
-                start = new Vector2(row, column);
-                end = new Vector2(row + cellSize.y, column);
-                Debug.DrawLine(start, end, color, 100f);
-
-                // Cima
-                start = new Vector2(row, column + cellSize.x);
-                end = new Vector2(row + cellSize.y , column + cellSize.x);
-                Debug.DrawLine(start, end, color, 100f);
-
-            }
-
+            model.EscolhePosicao(model.food.gameObject);
+            Debug.Log($"GameMaster: OnFoodEaten was called by {gO.tag}");
         }
     }
 
-    private void OnFoodEaten(object sender, object obj)
+    private void OnPlayerMove(object sender, object obj)
     {
-        Debug.Log($"OnFoodEaten was called by {obj.GetType()}");
+        if (obj is PlayerController playerController){
+            model.SwitchOccupiedPosition(playerController.gameObject);
+            Debug.Log($"GameMaster: OnPlayerMove was called by {playerController.tag}");
+        }
     }
 
-    public void ApresentaNovoEstado() { }
-
-    public void StartGame()
+    public void OnQuit()
     {
-        model.ConstroiJogo();
+        Debug.Log("Application quit!");
+        Application.Quit();
     }
+
 }

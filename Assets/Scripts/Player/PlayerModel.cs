@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class PlayerModel: MonoBehaviour
 {
+    [SerializeField] public int scoreToAdd = 10;
+
+
     private PlayerView view;
     private PlayerController controller; 
     private bool isAlive = true;
-    public int score = 0;
+    private int score = 0;
     private static PlayerModel instance;
     private void Awake()
     {
@@ -40,6 +43,11 @@ public class PlayerModel: MonoBehaviour
         {
             score += points;
         }
+    }
+
+    public int GetScore()
+    {
+        return score;
     }
 
     public void Die()

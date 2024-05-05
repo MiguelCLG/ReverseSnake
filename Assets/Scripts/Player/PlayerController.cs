@@ -18,7 +18,12 @@ public class PlayerController: MonoBehaviour
     {
         model = GetComponent<PlayerModel>();
         view = GetComponent<PlayerView>();
+        SubscribeToEvents();
+    }
 
+    private void SubscribeToEvents()
+    {
+        EventSubscriber.SubscribeToEvent("OnFoodEaten", OnFoodEaten);
     }
 
     public void Update()
@@ -37,6 +42,7 @@ public class PlayerController: MonoBehaviour
     {
         // Movimenta o jogador e atualiza a visualização
         model.Move(direction);
+        EventRegistry.GetEventPublisher("OnPlayerMove").RaiseEvent(this); // Regista o movimento no Game Master
     }
 
     public void PlayerEatsFood(int scoreValue)
@@ -51,5 +57,32 @@ public class PlayerController: MonoBehaviour
         // Atualiza o estado para morto e atualiza a visualização
         model.Die();
         view.DisplayDeath();
+    }
+
+    public void SetPosition(Vector2 newPosition)
+    {
+        view.DisplayPlayer( newPosition ); 
+    }
+
+    public int GetScore() { return model.GetScore();}
+    //Event Handlers
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Debug.Log($"Collisao com player: {collision.tag}");
+        if (collision.CompareTag("Snake"))
+        {
+            PlayerDies();
+        }
+    }
+
+    private void OnFoodEaten(object sender, object obj)
+    {
+        if (obj is GameObject gameObj)
+            {
+            if (gameObj.tag == "Player")
+                PlayerEatsFood(model.scoreToAdd);
+            Debug.Log($"Player: OnFoodEaten was called by {gameObj.tag}");
+        }
     }
 }
