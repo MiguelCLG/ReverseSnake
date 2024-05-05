@@ -32,7 +32,7 @@ public class SnakeView : MonoBehaviour
     {
         
     }
-
+    //metodo pra mostrar a posicao da snake
     public void DisplaySnake(Vector2 newPosition)
     {
         transform.position = newPosition;

@@ -6,24 +6,25 @@ public static class EventRegistry
 {
     private static Dictionary<string, EventPublisher<object>> eventDictionary = new Dictionary<string, EventPublisher<object>>();
 
-    // Method to register an event with a given name
+    // Cria um evento com um nome
     public static void RegisterEvent(string eventName)
     {
-        if (!eventDictionary.ContainsKey(eventName))
+        if (!eventDictionary.ContainsKey(eventName)) //  Se nao existe o evento, entao cria
         {
             eventDictionary[eventName] = new EventPublisher<object>();
         }
     }
 
+    // funcao para ir buscar todos os eventos criados
     public static Dictionary<string, EventPublisher<object>> GetAllEvents()
     {
         return eventDictionary;
     }
 
-    // Method to get the EventPublisher instance for a given event name
+    // metodo para ir buscar o publisher correspondente ao evento com o nome eventName
     public static EventPublisher<object> GetEventPublisher(string eventName)
     {
-        if (eventDictionary.ContainsKey(eventName))
+        if (eventDictionary.ContainsKey(eventName)) 
         {
             return eventDictionary[eventName];
         }

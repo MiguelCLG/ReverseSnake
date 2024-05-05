@@ -44,7 +44,7 @@ public class SnakeModel : MonoBehaviour
     {
         
     }
-
+    //metodo pra calcular o tamanho da snake
     public void CalculaTamanhoSnake()
     {
         snakeBody.AddAfter(snakeBody.First, snakeImage);

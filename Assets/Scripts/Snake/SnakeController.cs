@@ -37,12 +37,12 @@ public class SnakeController : MonoBehaviour
     {
         
     }
-
+    //metodo para atualizar a posicao da snake
     public void SetPosition(Vector3 newPosition)
     {
         view.DisplaySnake(newPosition);
     }
-
+    //metodo para quando a sneke come a comida
     private void OnFoodEaten(object sender, object obj)
     {
         if(obj is GameObject gO)

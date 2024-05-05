@@ -28,6 +28,7 @@ public class GameMasterView: MonoBehaviour
         DrawGrid();
     }
 
+    // Metodo que desenha a grid, apenas para efeitos de debug
     private void DrawGrid()
     {
         int rowStart = Mathf.RoundToInt(transform.position.x);
@@ -63,6 +64,7 @@ public class GameMasterView: MonoBehaviour
 
         }
     }
+
     public void MostraJogo() { }
     public void MostraEstado() { }
 
@@ -82,12 +84,15 @@ public class GameMasterView: MonoBehaviour
         EventSubscriber.SubscribeToEvent("OnPlayerDeath", OnPlayerDeath);
     }
 
+    // Metodo chamado quando o score aumenta
     private void OnScoreIncrease(object sender, object obj) { 
         if(obj is PlayerController player)
         {
             scoreText.text = $"Score: {player.GetScore()}";
         }
     }
+
+    // Metodo chamado quando o player morre
     private void OnPlayerDeath(object sender, object obj) {
         gameOverPanel.SetActive(true);
     }

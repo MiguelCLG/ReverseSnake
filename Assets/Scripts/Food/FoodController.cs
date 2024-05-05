@@ -31,6 +31,8 @@ public class FoodController : MonoBehaviour
         view.DisplayFood(newPosition);
     }
 
+    //função do Unity para quando o objecto entra em contacto com outro
+    //caso a snake ou o player entrem em contacto chama esta funcao
     private void OnTriggerEnter2D(Collider2D collision)
     {
         EventRegistry.GetEventPublisher("OnFoodEaten").RaiseEvent(collision.gameObject);

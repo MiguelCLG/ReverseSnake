@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public static class EventSubscriber
 {
-    // Method to subscribe to an event by name
+    // Metodo para subscrever a um evento, recebe o nome do evento e uma callback
     public static void SubscribeToEvent(string eventName, EventHandler<object> eventHandler)
     {
         EventPublisher<object> publisher = EventRegistry.GetEventPublisher(eventName);
@@ -17,7 +17,7 @@ public static class EventSubscriber
         }
     }
 
-    // Method to unsubscribe from an event by name
+    // Metodo para des-subscrever de um evento
     public static void UnsubscribeFromEvent(string eventName, EventHandler<object> eventHandler)
     {
         EventPublisher<object> publisher = EventRegistry.GetEventPublisher(eventName);

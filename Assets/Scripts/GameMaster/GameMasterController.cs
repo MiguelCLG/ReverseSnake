@@ -10,7 +10,7 @@ public class GameMasterController: MonoBehaviour
     private GameMasterView view;
     private static GameMasterController Instance { get; set; }
 
-  
+    // Primeira iteração do lifecycle do objecto unity
     private void Awake()
     {
         if (Instance == null)
@@ -24,6 +24,7 @@ public class GameMasterController: MonoBehaviour
 
     }
 
+    // Chamado no inicio
     private void Start()
     {
         model = GetComponent<GameMasterModel>();
@@ -34,10 +35,13 @@ public class GameMasterController: MonoBehaviour
 
     public void ApresentaNovoEstado() { }
 
+    // Chamado Quando o jogo recomeça
     public void Restart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
+
+    // Chamado quando o jogo Começa
     public void StartGame()
     {
         view.CloseWindow();

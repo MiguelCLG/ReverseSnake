@@ -3,29 +3,40 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class PlayerController: MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
-    private static PlayerController instance;
-    private PlayerModel model;
-    private PlayerView view;
+    private static PlayerController instance;  
+    private PlayerModel model;                 
+    private PlayerView view;                   
 
-    private void Awake() {
-        if (instance == null) {instance = this; }
-        else Destroy(this);
+    // Garante que existe apenas uma instância deste controller
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this; 
+        }
+        else
+        {
+            Destroy(this); 
+        }
     }
 
+    // Inicialização
     public void Start()
     {
-        model = GetComponent<PlayerModel>();
-        view = GetComponent<PlayerView>();
-        SubscribeToEvents();
+        model = GetComponent<PlayerModel>();  
+        view = GetComponent<PlayerView>();    
+        SubscribeToEvents();                  
     }
 
+    // Subscreve em eventos relevantes usando um sistema de eventos
     private void SubscribeToEvents()
     {
         EventSubscriber.SubscribeToEvent("OnFoodEaten", OnFoodEaten);
     }
 
+    // Atualiza a cada frame
     public void Update()
     {
         if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
@@ -38,50 +49,51 @@ public class PlayerController: MonoBehaviour
             MovePlayer(Vector2.right);
     }
 
+    // Movimenta o jogador na direção especificada
     public void MovePlayer(Vector2 direction)
     {
-        // Movimenta o jogador e atualiza a visualização
-        model.Move(direction);
-        EventRegistry.GetEventPublisher("OnPlayerMove").RaiseEvent(this); // Regista o movimento no Game Master
+        model.Move(direction);  
+        EventRegistry.GetEventPublisher("OnPlayerMove").RaiseEvent(this);  
     }
 
+    // Processa a ação de comer comida e adiciona pontos
     public void PlayerEatsFood(int scoreValue)
     {
-        // Adiciona pontos e atualiza a visualização
-        model.AddScore(scoreValue);
-        // view.DisplayPlayer();
+        model.AddScore(scoreValue);  
     }
 
+    // Processa a morte do jogador
     public void PlayerDies()
     {
-        // Atualiza o estado para morto e atualiza a visualização
-        model.Die();
-        view.DisplayDeath();
+        model.Die();          
+        view.DisplayDeath();  
     }
 
+    // Define a posição visual do jogador
     public void SetPosition(Vector2 newPosition)
     {
-        view.DisplayPlayer( newPosition ); 
+        view.DisplayPlayer(newPosition);
     }
 
-    public int GetScore() { return model.GetScore();}
-    //Event Handlers
+    // Retorna a pontuação atual do jogador
+    public int GetScore() { return model.GetScore(); }
 
+    // Manipulador de evento para colisões do Unity
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log($"Collisao com player: {collision.tag}");
+        Debug.Log($"Collisão com player: {collision.tag}");
         if (collision.CompareTag("Snake"))
         {
-            PlayerDies();
+            PlayerDies(); 
         }
     }
 
+    // Manipulador de evento para quando comida é comida
     private void OnFoodEaten(object sender, object obj)
     {
-        if (obj is GameObject gameObj)
-            {
-            if (gameObj.tag == "Player")
-                PlayerEatsFood(model.scoreToAdd);
+        if (obj is GameObject gameObj && gameObj.tag == "Player")
+        {
+            PlayerEatsFood(model.scoreToAdd); 
             Debug.Log($"Player: OnFoodEaten was called by {gameObj.tag}");
         }
     }
