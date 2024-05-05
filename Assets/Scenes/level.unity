@@ -339,7 +339,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 159598260}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 738209814}
+        m_TargetAssemblyTypeName: GameMasterController, Assembly-CSharp
+        m_MethodName: OnQuit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &159598260
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -409,6 +421,27 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.5690271, y: 0.5638299}
   m_EdgeRadius: 0
+--- !u!50 &357268841
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 357268834}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &366112328
 GameObject:
   m_ObjectHideFlags: 0
@@ -641,7 +674,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 522711204}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 738209814}
+        m_TargetAssemblyTypeName: GameMasterController, Assembly-CSharp
+        m_MethodName: Restart
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &522711204
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -871,6 +916,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59c51bc256233474d8bed48813c0aef3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scoreText: {fileID: 597587981}
+  gameOverPanel: {fileID: 1549635666}
 --- !u!114 &738209817
 MonoBehaviour:
   m_ObjectHideFlags: 0

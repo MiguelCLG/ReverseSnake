@@ -9,6 +9,7 @@ public class GameMasterView: MonoBehaviour
     private GameMasterModel model;
     private static GameMasterView Instance;
     [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private GameObject gameOverPanel;
 
     private void Awake()
     {
@@ -65,6 +66,10 @@ public class GameMasterView: MonoBehaviour
     public void MostraJogo() { }
     public void MostraEstado() { }
 
+    public void CloseWindow()
+    {
+        gameOverPanel.SetActive(false);
+    }
     // Eventos
 
     // Devemos registar os eventos de UI aqui, exemplo: player death screen ou high score counter
@@ -83,5 +88,7 @@ public class GameMasterView: MonoBehaviour
             scoreText.text = $"Score: {player.GetScore()}";
         }
     }
-    private void OnPlayerDeath(object sender, object obj) { }
+    private void OnPlayerDeath(object sender, object obj) {
+        gameOverPanel.SetActive(true);
+    }
 }

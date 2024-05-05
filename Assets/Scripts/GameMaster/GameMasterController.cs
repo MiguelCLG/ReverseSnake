@@ -1,6 +1,7 @@
 using System;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameMasterController: MonoBehaviour
 {
@@ -33,8 +34,13 @@ public class GameMasterController: MonoBehaviour
 
     public void ApresentaNovoEstado() { }
 
+    public void Restart()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
     public void StartGame()
     {
+        view.CloseWindow();
         model.ConstroiJogo();
     }
 
@@ -65,5 +71,10 @@ public class GameMasterController: MonoBehaviour
         }
     }
 
-    
+    public void OnQuit()
+    {
+        Debug.Log("Application quit!");
+        Application.Quit();
+    }
+
 }

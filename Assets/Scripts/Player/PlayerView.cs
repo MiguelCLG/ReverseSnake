@@ -30,5 +30,6 @@ public class PlayerView: MonoBehaviour
     {
         // Placeholder para código de renderização real.
         Debug.Log("Player is dead");
+        EventRegistry.GetEventPublisher("OnPlayerDeath").RaiseEvent(this);
     }
 }

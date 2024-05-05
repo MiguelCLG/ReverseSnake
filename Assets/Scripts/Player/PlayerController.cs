@@ -67,6 +67,15 @@ public class PlayerController: MonoBehaviour
     public int GetScore() { return model.GetScore();}
     //Event Handlers
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Debug.Log($"Collisao com player: {collision.tag}");
+        if (collision.CompareTag("Snake"))
+        {
+            PlayerDies();
+        }
+    }
+
     private void OnFoodEaten(object sender, object obj)
     {
         if (obj is GameObject gameObj)
