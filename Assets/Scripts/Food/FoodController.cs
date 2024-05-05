@@ -28,7 +28,7 @@ public class FoodController : MonoBehaviour
 
     public void SetPosition(Vector3 newPosition)
     {
-        transform.position = newPosition;
+        view.DisplayFood(newPosition);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

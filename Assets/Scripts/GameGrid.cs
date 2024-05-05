@@ -25,4 +25,16 @@ public class GameGrid
     {
         return (position + originalPosition) * cellSize + halfCellSize;
     }
+
+    public Vector2 GetRandomGridPosition()
+    {
+        System.Random rng = new System.Random();
+        int newX = rng.Next(0, Mathf.RoundToInt(gridSize.x));
+        int newY = rng.Next(0, Mathf.RoundToInt(gridSize.y));
+
+        Vector3 newPos = new Vector3(newX, newY, 0);
+        Vector2 newGridPosition = CalculateMapPosition(newPos);
+
+        return newGridPosition;
+    }
 }

@@ -22,11 +22,7 @@ public class PlayerView: MonoBehaviour
     // Método para atualizar a visualização do jogador na interface do usuário.
     public void DisplayPlayer(Vector2 newPosition)
     {
-        Vector3 pos = new Vector3(newPosition.x, newPosition.y, 0);
-        // Placeholder para código de renderização real. Poderia atualizar a posição do jogador na UI.
-        Debug.Log($"Player at position {transform.position} with score {model.GetScore()}");
-
-        transform.position = pos;
+        transform.position = newPosition;
     }
 
     // Método para exibir o status do jogador como morto na interface do usuário.

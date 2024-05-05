@@ -31,25 +31,39 @@ public class GameMasterController: MonoBehaviour
         StartGame();
     }
 
-    private void RegisterEvents()
-    {
-        EventRegistry.RegisterEvent("OnFoodEaten");
-        EventSubscriber.SubscribeToEvent("OnFoodEaten", OnFoodEaten);
-    }
-    
-
-    private void OnFoodEaten(object sender, object obj)
-    {
-        if (obj is GameObject gO){
-            model.EscolhePosicaoComida();
-            Debug.Log($"GameMaster: OnFoodEaten was called by {gO.tag}");
-        }
-    }
-
     public void ApresentaNovoEstado() { }
 
     public void StartGame()
     {
         model.ConstroiJogo();
     }
+
+    // Events
+
+    private void RegisterEvents()
+    {
+        EventRegistry.RegisterEvent("OnFoodEaten");
+        EventSubscriber.SubscribeToEvent("OnFoodEaten", OnFoodEaten);
+
+        EventRegistry.RegisterEvent("OnPlayerMove");
+        EventSubscriber.SubscribeToEvent("OnPlayerMove", OnPlayerMove);
+    }
+    private void OnFoodEaten(object sender, object obj)
+    {
+        if (obj is GameObject gO)
+        {
+            model.EscolhePosicao(model.food.gameObject);
+            Debug.Log($"GameMaster: OnFoodEaten was called by {gO.tag}");
+        }
+    }
+
+    private void OnPlayerMove(object sender, object obj)
+    {
+        if (obj is PlayerController playerController){
+            model.SwitchOccupiedPosition(playerController.gameObject);
+            Debug.Log($"GameMaster: OnPlayerMove was called by {playerController.tag}");
+        }
+    }
+
+    
 }

@@ -30,4 +30,10 @@ public class FoodView : MonoBehaviour
     {
         
     }
+
+    public void DisplayFood(Vector2 newPosition)
+    {
+
+        transform.position = newPosition;
+    }
 }

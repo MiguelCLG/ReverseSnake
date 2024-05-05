@@ -42,6 +42,7 @@ public class PlayerController: MonoBehaviour
     {
         // Movimenta o jogador e atualiza a visualização
         model.Move(direction);
+        EventRegistry.GetEventPublisher("OnPlayerMove").RaiseEvent(this); // Regista o movimento no Game Master
     }
 
     public void PlayerEatsFood(int scoreValue)
@@ -58,7 +59,12 @@ public class PlayerController: MonoBehaviour
         view.DisplayDeath();
     }
 
+    public void SetPosition(Vector2 newPosition)
+    {
+        view.DisplayPlayer( newPosition ); 
+    }
 
+    public int GetScore() { return model.GetScore();}
     //Event Handlers
 
     private void OnFoodEaten(object sender, object obj)

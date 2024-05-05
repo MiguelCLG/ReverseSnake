@@ -38,6 +38,11 @@ public class SnakeController : MonoBehaviour
         
     }
 
+    public void SetPosition(Vector3 newPosition)
+    {
+        view.DisplaySnake(newPosition);
+    }
+
     private void OnFoodEaten(object sender, object obj)
     {
         if(obj is GameObject gO)
