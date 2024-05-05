@@ -9,17 +9,28 @@ public class GameGrid
 
     private Vector2 halfCellSize;
 
+    private static GameGrid Instance;
+
     public GameGrid() {
+        Instance = this;        
         halfCellSize = cellSize / 2;
     }
+
+
     public GameGrid(Vector2 gridSize, Vector2 cellSize, Vector2 originalPosition)
     {
+        Instance = this;
         this.gridSize = gridSize;
         this.cellSize = cellSize;
         this.originalPosition = originalPosition;
         halfCellSize = cellSize / 2;
-
     }
+
+    public static GameGrid getInstance()
+    {
+        return Instance;
+    }
+
 
     public Vector2 CalculateMapPosition(Vector2 position)
     {
@@ -37,4 +48,28 @@ public class GameGrid
 
         return newGridPosition;
     }
+
+    public Vector2 CalculateGridCoordinates(Vector2 mapPosition) {
+        Vector2 gridPosition = new Vector2(
+                Mathf.Floor(((mapPosition - originalPosition) / cellSize).x), Mathf.Floor(((mapPosition - originalPosition) / cellSize).y)
+            );
+        return gridPosition;
+    }
+
+    public Vector2 ClampOnScreen(Vector2 position)
+    {
+        var cellPosition = CalculateGridCoordinates(position);
+
+        if(cellPosition.x< 0 )
+            cellPosition.x = gridSize.x - 1;
+        else if(cellPosition.y < 0)
+            cellPosition.y = gridSize.y - 1;
+        else if(cellPosition.x > gridSize.x -1 )
+            cellPosition.x = 0;
+        else if (cellPosition.y > gridSize.y -1 )
+            cellPosition.y = 0;
+
+        return CalculateMapPosition(cellPosition);
+    }
+
 }
