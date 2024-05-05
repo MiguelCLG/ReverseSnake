@@ -20,6 +20,8 @@ public class GameMasterModel: MonoBehaviour
     [SerializeField] public Vector2 cellSize = Vector2.zero;
 
     private Dictionary<string, Vector2> occupiedCells = new Dictionary<string, Vector2>();
+
+    // Singleton
     private void Awake()
     {
         if (Instance == null)
@@ -30,26 +32,29 @@ public class GameMasterModel: MonoBehaviour
             Destroy(this);
         
 
-        // Criação da grid
+        // Criaï¿½ï¿½o da grid
         Vector2 originalGridPosition = new Vector2(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y));
 
         grid = new GameGrid(gridSize, cellSize, originalGridPosition);
 
     /* 
-        Para já estamos a criar uma dependencia entre o Game Master e os objectos Food, Player e Snake.
-        Como o jogo é pequeno e não tem muitos elementos, podemos deixar como está. 
+        Para jï¿½ estamos a criar uma dependencia entre o Game Master e os objectos Food, Player e Snake.
+        Como o jogo ï¿½ pequeno e nï¿½o tem muitos elementos, podemos deixar como estï¿½. 
         Mas se quisermos realmente desacolpolar tudo, teremos de registar um evento para cada um deles e subscrever nos respectivos controllers
      */
         food = FindObjectOfType<FoodController>();
         player = FindObjectOfType<PlayerController>();
         snake = FindObjectOfType<SnakeController>();
     }
+
+    // Chamado antes do primeiro frame
     private void Start()
     {
         controller = GetComponent<GameMasterController>();
         view = GetComponent<GameMasterView>();
     }
 
+    // Metodo que constroi o jogo
     public void ConstroiJogo() {
 
         // Escolhe as primeiras posicoes para o inicio do jogo
@@ -57,9 +62,11 @@ public class GameMasterModel: MonoBehaviour
         EscolhePosicao(snake.gameObject);
         EscolhePosicao(food.gameObject);
 
-        // diz à snake para começar o jogo (neste caso, calcula o caminho)
+        // diz ï¿½ snake para comeï¿½ar o jogo (neste caso, calcula o caminho)
 
     }
+
+    // Metodo que escolhe uma posiÃ§Ã£o para um objecto
     public void EscolhePosicao(GameObject objecto)
     {
         Vector2 newGridPosition = grid.GetRandomGridPosition();
@@ -80,6 +87,7 @@ public class GameMasterModel: MonoBehaviour
             food.SetPosition(newGridPosition);
     }
 
+    // Metodo que troca a posiÃ§Ã£o de um objecto
     public void SwitchOccupiedPosition(GameObject objecto)
     {
         occupiedCells.Remove(objecto.tag);
