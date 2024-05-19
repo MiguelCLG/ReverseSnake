@@ -98,4 +98,12 @@ public class GameMasterController: MonoBehaviour
         Application.Quit();
     }
 
+
+    // Quando o sistema operativo detecta que há pouca memoria disponivel o unity chama este método
+    // Aqui podemos avisar o utilizador que pode perder o seu progresso
+    public void OnLowMemory()
+    {
+        Debug.Log("OnLowMemory was Called!")
+    }
+
 }
