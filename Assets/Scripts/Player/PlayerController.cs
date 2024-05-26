@@ -1,33 +1,33 @@
-﻿using System;
+using System;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IController
 {
-    private static PlayerController instance;  
-    private PlayerModel model;                 
-    private PlayerView view;                   
+    private static PlayerController instance;
+    private PlayerModel model;
+    private PlayerView view;
 
     // Garante que existe apenas uma instância deste controller
     private void Awake()
     {
         if (instance == null)
         {
-            instance = this; 
+            instance = this;
         }
         else
         {
-            Destroy(this); 
+            Destroy(this);
         }
     }
 
     // Inicialização
     public void Start()
     {
-        model = GetComponent<PlayerModel>();  
-        view = GetComponent<PlayerView>();    
-        SubscribeToEvents();                  
+        model = GetComponent<PlayerModel>();
+        view = GetComponent<PlayerView>();
+        SubscribeToEvents();
     }
 
     // Subscreve em eventos relevantes usando um sistema de eventos
@@ -52,8 +52,8 @@ public class PlayerController : MonoBehaviour
     // Movimenta o jogador na direção especificada
     public void MovePlayer(Vector2 direction)
     {
-        model.Move(direction);  
-        EventRegistry.GetEventPublisher("OnPlayerMove").RaiseEvent(this);  
+        model.Move(direction);
+        EventRegistry.GetEventPublisher("OnPlayerMove").RaiseEvent(this);
     }
 
     // Processa a ação de comer comida e adiciona pontos
@@ -66,14 +66,14 @@ public class PlayerController : MonoBehaviour
     // Processa a morte do jogador
     public void PlayerDies()
     {
-        model.Die();          
-        view.DisplayDeath();  
+        model.Die();
+        view.DisplayDeath();
     }
 
     // Define a posição visual do jogador
     public void SetPosition(Vector2 newPosition)
     {
-        view.DisplayPlayer(newPosition);
+        view.DisplayView(newPosition);
     }
 
     // Retorna a pontuação atual do jogador
@@ -85,7 +85,7 @@ public class PlayerController : MonoBehaviour
         Debug.Log($"Collisão com player: {collision.tag}");
         if (collision.CompareTag("Snake"))
         {
-            PlayerDies(); 
+            PlayerDies();
         }
     }
 
@@ -94,7 +94,7 @@ public class PlayerController : MonoBehaviour
     {
         if (obj is GameObject gameObj && gameObj.tag == "Player")
         {
-            PlayerEatsFood(model.scoreToAdd); 
+            PlayerEatsFood(model.scoreToAdd);
             Debug.Log($"Player: OnFoodEaten was called by {gameObj.tag}");
         }
     }
