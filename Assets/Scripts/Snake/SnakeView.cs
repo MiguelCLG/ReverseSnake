@@ -25,16 +25,19 @@ public class SnakeView : MonoBehaviour
         model = GetComponent<SnakeModel>();        
     }
 
-
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     //metodo pra mostrar a posicao da snake
     public void DisplaySnake(Vector2 newPosition)
     {
-        transform.position = newPosition;
+        var previousPosition = newPosition;
+        var snakeBodyPositions = new LinkedList<Vector2>();
+        var grid = GameGrid.getInstance();
+        foreach (Transform child in transform)
+        {
+            var aux = grid.CalculateGridCoordinates(child.position);
+            child.position = grid.CalculateMapPosition(previousPosition);
+            snakeBodyPositions.AddLast(previousPosition);
+            previousPosition = aux;
+        }
+        model.snakeBodyPositions = snakeBodyPositions;
     }
 }

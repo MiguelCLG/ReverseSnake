@@ -17,7 +17,7 @@ public class GameGrid
 
     private static GameGrid Instance;
 
-    public Dictionary<string, Vector2> occupiedCells = new Dictionary<string, Vector2>();
+    public Dictionary<Vector2, string> occupiedCells = new Dictionary<Vector2, string>();
 
 
     public GameGrid() {
@@ -55,7 +55,6 @@ public class GameGrid
         int newY = rng.Next(0, Mathf.RoundToInt(gridSize.y));
 
         Vector3 newPos = new Vector3(newX, newY, 0);
-        Vector2 newGridPosition = CalculateMapPosition(newPos);
 
         return newPos;
     }

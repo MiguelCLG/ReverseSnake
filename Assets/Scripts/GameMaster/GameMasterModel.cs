@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Xml.Linq;
@@ -70,13 +71,15 @@ public class GameMasterModel: MonoBehaviour
     {
         Vector2 newGridPosition = grid.GetRandomGridPosition();
 
-        while (grid.occupiedCells.ContainsValue(newGridPosition))
+        while (grid.occupiedCells.ContainsKey(newGridPosition))
         {
             newGridPosition = grid.GetRandomGridPosition();
         }
 
-        grid.occupiedCells.Remove(objecto.tag);
-        grid.occupiedCells.Add(objecto.tag, newGridPosition);
+        // try catch here please
+        var objectInGrid = grid.occupiedCells.FirstOrDefault((oc) => oc.Value == objecto.tag);
+        grid.occupiedCells.Remove(objectInGrid.Key);
+        grid.occupiedCells.Add(newGridPosition, objecto.tag);
         
         var newWorldPosition = grid.CalculateMapPosition(newGridPosition);
 
@@ -90,9 +93,52 @@ public class GameMasterModel: MonoBehaviour
 
     // Metodo que troca a posição de um objecto
     public void SwitchOccupiedPosition(GameObject objecto)
-    {
-        grid.occupiedCells.Remove(objecto.tag);
-        grid.occupiedCells.Add(objecto.tag, grid.CalculateGridCoordinates(objecto.transform.position));
+    {   
+        if(objecto.tag == "Snake")
+        {
+            var aux = new Dictionary<Vector2, string>();
+            foreach(var oc in grid.occupiedCells)
+            {
+                if(oc.Value != "Snake")
+                {
+                    aux.Add(oc.Key, oc.Value);
+                }
+            }
+            grid.occupiedCells = aux;
+            foreach(Transform body in objecto.transform)
+            {
+                var newGridPosition = grid.CalculateGridCoordinates(body.position);
+                if(grid.occupiedCells.ContainsKey(newGridPosition) && grid.occupiedCells[newGridPosition] == "Food" )
+                {
+                    grid.occupiedCells.Remove(newGridPosition);
+                }
+                grid.occupiedCells.Add(newGridPosition, "Snake");
+            }
+            return;
+        }
+
+        var tag = grid.occupiedCells.Where((e) => e.Value.Contains(objecto.tag)).Select(pair => pair.Key);
+
+        grid.occupiedCells.Remove(tag.Single());
+
+        var newPosition = grid.CalculateGridCoordinates(objecto.transform.position);
+        if (grid.occupiedCells.ContainsKey(newPosition) && grid.occupiedCells[newPosition] == "Food")
+        {
+            grid.occupiedCells.Remove(newPosition);
+        }
+        grid.occupiedCells.Add(grid.CalculateGridCoordinates(objecto.transform.position), objecto.tag);
+
+        /*
+            occupiedCells = {
+                (1,1): "Snake",
+                (2,2): "Player",
+                (3,3): "Food", 
+                (0,1): "Snake",
+                (0,0): "Snake",
+
+            }
+
+         */
     }
 
     public void AumentaPontuacao() { }

@@ -20,7 +20,7 @@ public class FoodController : MonoBehaviour
         model = GetComponent<FoodModel>();
     }
 
-    public void SetPosition(Vector3 newPosition)
+    public void SetPosition(Vector2 newPosition)
     {
         view.DisplayFood(newPosition);
     }

@@ -69,6 +69,10 @@ public class GameMasterController: MonoBehaviour
         if (obj is GameObject gO)
         {
             model.EscolhePosicao(model.food.gameObject);
+            if(gO.tag == "Snake")
+            {
+                model.snake.Grow();
+            }
             Debug.Log($"GameMaster: OnFoodEaten was called by {gO.tag}");
         }
     }
@@ -79,7 +83,9 @@ public class GameMasterController: MonoBehaviour
             model.SwitchOccupiedPosition(playerController.gameObject);
             Debug.Log($"GameMaster: OnPlayerMove was called by {playerController.tag}");
         }
-    }private void OnSnakeMove(object sender, object obj)
+    }
+    
+    private void OnSnakeMove(object sender, object obj)
     {
         if (obj is SnakeController snakeController){
             model.SwitchOccupiedPosition(snakeController.gameObject);
