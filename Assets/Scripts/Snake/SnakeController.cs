@@ -18,6 +18,7 @@ public class SnakeController : MonoBehaviour
         {
             Destroy(this);
         }
+
     }
 
     // Start is called before the first frame update
@@ -31,6 +32,8 @@ public class SnakeController : MonoBehaviour
     private void RegisterEvents()
     {
         EventSubscriber.SubscribeToEvent("OnFoodEaten", OnFoodEaten);
+        EventSubscriber.SubscribeToEvent("OnPlayerMove", model.MoveTowardsTarget);
+        EventSubscriber.SubscribeToEvent("OnGameMasterLoaded", model.InitializeSnake);
     }
     // Update is called once per frame
     void Update()
@@ -38,14 +41,18 @@ public class SnakeController : MonoBehaviour
         
     }
     //metodo para atualizar a posicao da snake
-    public void SetPosition(Vector3 newPosition)
+    public void SetPosition(Vector2 newPosition)
     {
         view.DisplaySnake(newPosition);
+    }
+
+    public void Grow()
+    {
+        model.GrowSnake();
     }
     //metodo para quando a sneke come a comida
     private void OnFoodEaten(object sender, object obj)
     {
-        if(obj is GameObject gO)
-            Debug.Log($"Snake: OnFoodEaten was called by {gO.tag}");
+        model.UpdatePathToFood();
     }
 }

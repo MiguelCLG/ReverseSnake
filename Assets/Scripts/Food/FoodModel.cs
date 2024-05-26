@@ -5,8 +5,6 @@ using UnityEngine;
 public class FoodModel : MonoBehaviour
 {
     private static FoodModel Instance { get; set; }
-    private FoodView view;
-    private FoodController controller;
 
     private void Awake()
     {
@@ -17,17 +15,5 @@ public class FoodModel : MonoBehaviour
         else
             Destroy(this);
 
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-        view = GetComponent<FoodView>();
-        controller = GetComponent<FoodController>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

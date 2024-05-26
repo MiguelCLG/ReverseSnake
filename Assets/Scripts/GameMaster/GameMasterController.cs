@@ -46,6 +46,7 @@ public class GameMasterController: MonoBehaviour
     {
         view.CloseWindow();
         model.ConstroiJogo();
+        EventRegistry.GetEventPublisher("OnGameMasterLoaded").RaiseEvent(this);
     }
 
     // Events
@@ -57,12 +58,21 @@ public class GameMasterController: MonoBehaviour
 
         EventRegistry.RegisterEvent("OnPlayerMove");
         EventSubscriber.SubscribeToEvent("OnPlayerMove", OnPlayerMove);
+
+        EventRegistry.RegisterEvent("OnSnakeMove");
+        EventSubscriber.SubscribeToEvent("OnSnakeMove", OnSnakeMove);
+
+        EventRegistry.RegisterEvent("OnGameMasterLoaded");
     }
     private void OnFoodEaten(object sender, object obj)
     {
         if (obj is GameObject gO)
         {
             model.EscolhePosicao(model.food.gameObject);
+            if(gO.tag == "Snake")
+            {
+                model.snake.Grow();
+            }
             Debug.Log($"GameMaster: OnFoodEaten was called by {gO.tag}");
         }
     }
@@ -72,6 +82,13 @@ public class GameMasterController: MonoBehaviour
         if (obj is PlayerController playerController){
             model.SwitchOccupiedPosition(playerController.gameObject);
             Debug.Log($"GameMaster: OnPlayerMove was called by {playerController.tag}");
+        }
+    }
+    
+    private void OnSnakeMove(object sender, object obj)
+    {
+        if (obj is SnakeController snakeController){
+            model.SwitchOccupiedPosition(snakeController.gameObject);
         }
     }
 

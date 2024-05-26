@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -15,6 +16,9 @@ public class GameGrid
     private Vector2 halfCellSize;
 
     private static GameGrid Instance;
+
+    public Dictionary<Vector2, string> occupiedCells = new Dictionary<Vector2, string>();
+
 
     public GameGrid() {
         Instance = this;        
@@ -51,9 +55,8 @@ public class GameGrid
         int newY = rng.Next(0, Mathf.RoundToInt(gridSize.y));
 
         Vector3 newPos = new Vector3(newX, newY, 0);
-        Vector2 newGridPosition = CalculateMapPosition(newPos);
 
-        return newGridPosition;
+        return newPos;
     }
 
     // Dada um posição na grid retorna essa posição no sistema de coordenadas reais

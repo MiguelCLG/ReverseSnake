@@ -16,22 +16,16 @@ public class FoodController : MonoBehaviour
         }
         else
             Destroy(this);
-
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
         view = GetComponent<FoodView>();
         model = GetComponent<FoodModel>();
     }
 
-    public void SetPosition(Vector3 newPosition)
+    public void SetPosition(Vector2 newPosition)
     {
         view.DisplayFood(newPosition);
     }
 
-    //função do Unity para quando o objecto entra em contacto com outro
+    //funï¿½ï¿½o do Unity para quando o objecto entra em contacto com outro
     //caso a snake ou o player entrem em contacto chama esta funcao
     private void OnTriggerEnter2D(Collider2D collision)
     {
