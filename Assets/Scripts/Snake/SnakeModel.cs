@@ -88,7 +88,7 @@ public class SnakeModel : MonoBehaviour
 
     private void UpdateSnakeBodyGraphics(Vector2 newPosition)
     {
-        view.DisplaySnake(newPosition);
+        view.DisplayView(newPosition);
         EventRegistry.GetEventPublisher("OnSnakeMove").RaiseEvent(controller);
     }
 

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
  public interface IController
     {
-        public void SetPosition(Vector3 position);
+        public void SetPosition(Vector2 position);
     }
 
