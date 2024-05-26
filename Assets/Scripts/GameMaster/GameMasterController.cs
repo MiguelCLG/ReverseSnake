@@ -10,7 +10,7 @@ public class GameMasterController: MonoBehaviour
     private GameMasterView view;
     private static GameMasterController Instance { get; set; }
 
-    // Primeira iteraÁ„o do lifecycle do objecto unity
+    // Primeira itera√ß√£o do lifecycle do objecto unity
     private void Awake()
     {
         if (Instance == null)
@@ -35,13 +35,13 @@ public class GameMasterController: MonoBehaviour
 
     public void ApresentaNovoEstado() { }
 
-    // Chamado Quando o jogo recomeÁa
+    // Chamado Quando o jogo recome√ßa
     public void Restart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    // Chamado quando o jogo ComeÁa
+    // Chamado quando o jogo Come√ßa
     public void StartGame()
     {
         view.CloseWindow();
@@ -96,6 +96,14 @@ public class GameMasterController: MonoBehaviour
     {
         Debug.Log("Application quit!");
         Application.Quit();
+    }
+
+
+    // Quando o sistema operativo detecta que h√° pouca memoria disponivel o unity chama este metodo
+    // Aqui podemos avisar o utilizador que pode perder o seu progresso
+    public void OnLowMemory()
+    {
+        Debug.Log("OnLowMemory was Called!");
     }
 
 }
