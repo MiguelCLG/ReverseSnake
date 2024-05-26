@@ -10,17 +10,17 @@ public class SnakeModel : MonoBehaviour
     // public Vector2 gridSize; // Tamanho do grid
     private GameGrid grid;
 
-
-
     public float moveSpeed = 1.0f; // Velocidade de movimento da snake
     public LinkedList<Vector2> snakeBodyPositions = new LinkedList<Vector2>(); // Lista das posições do corpo
     private Queue<Vector2> pathToFollow = new Queue<Vector2>(); // Caminho para seguir
     private Vector2 currentTarget;
 
+    // TODO: Devem todos ir para a view
     [SerializeField] private Sprite snakeImage; // Imagem do corpo da snake
     [SerializeField] private Sprite snakeHead; // Imagem da cabeça da snake
-
     [SerializeField] private GameObject snakePartPrefab;
+
+    // TODO: snakeBodySprites deve ir para a view
     private LinkedList<GameObject> snakeBodySprites = new LinkedList<GameObject>(); // Sprites para o corpo
 
     private static SnakeModel instance;

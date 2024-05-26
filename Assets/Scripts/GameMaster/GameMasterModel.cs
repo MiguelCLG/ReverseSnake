@@ -127,18 +127,6 @@ public class GameMasterModel: MonoBehaviour
             grid.occupiedCells.Remove(newPosition);
         }
         grid.occupiedCells.Add(grid.CalculateGridCoordinates(objecto.transform.position), objecto.tag);
-
-        /*
-            occupiedCells = {
-                (1,1): "Snake",
-                (2,2): "Player",
-                (3,3): "Food", 
-                (0,1): "Snake",
-                (0,0): "Snake",
-
-            }
-
-         */
     }
 
     public void AumentaPontuacao() { }
