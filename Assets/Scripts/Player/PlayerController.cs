@@ -59,7 +59,8 @@ public class PlayerController : MonoBehaviour
     // Processa a ação de comer comida e adiciona pontos
     public void PlayerEatsFood(int scoreValue)
     {
-        model.AddScore(scoreValue);  
+        model.AddScore(scoreValue);
+        EventRegistry.GetEventPublisher("OnScoreIncrease").RaiseEvent(this);
     }
 
     // Processa a morte do jogador
