@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SnakeView : MonoBehaviour
+public class SnakeView : MonoBehaviour, IView
 {
     private SnakeModel model;
     private static SnakeView instance;
@@ -26,7 +26,7 @@ public class SnakeView : MonoBehaviour
     }
 
     //metodo pra mostrar a posicao da snake
-    public void DisplaySnake(Vector2 newPosition)
+    public void DisplayView(Vector2 newPosition)
     {
         var previousPosition = newPosition;
         var snakeBodyPositions = new LinkedList<Vector2>();

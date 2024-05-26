@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FoodView : MonoBehaviour
+public class FoodView : MonoBehaviour, IView
 {
     private static FoodView Instance { get; set; }
 
@@ -17,7 +17,7 @@ public class FoodView : MonoBehaviour
 
     }
 
-    public void DisplayFood(Vector2 newPosition)
+    public void DisplayView(Vector2 newPosition)
     {
         transform.position = newPosition;
     }

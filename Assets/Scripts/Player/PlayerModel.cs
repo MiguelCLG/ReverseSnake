@@ -41,7 +41,7 @@ public class PlayerModel : MonoBehaviour
         }
 
         Vector2 newPosition = new Vector2(transform.position.x, transform.position.y) + direction;  
-        view.DisplayPlayer(GameGrid.getInstance().ClampOnScreen(newPosition));  
+        view.DisplayView(GameGrid.getInstance().ClampOnScreen(newPosition));  
     }
 
     // Adiciona pontos à pontuação do jogador, se ele estiver vivo.

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FoodController : MonoBehaviour
+public class FoodController : MonoBehaviour, IController
 {
     private static FoodController Instance { get; set; }
     private FoodView view;
@@ -22,7 +22,7 @@ public class FoodController : MonoBehaviour
 
     public void SetPosition(Vector2 newPosition)
     {
-        view.DisplayFood(newPosition);
+        view.DisplayView(newPosition);
     }
 
     //fun��o do Unity para quando o objecto entra em contacto com outro

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SnakeController : MonoBehaviour
+public class SnakeController : MonoBehaviour, IController
 {
     private SnakeModel model;
     private SnakeView view;
@@ -18,7 +18,6 @@ public class SnakeController : MonoBehaviour
         {
             Destroy(this);
         }
-
     }
 
     // Start is called before the first frame update
@@ -38,12 +37,12 @@ public class SnakeController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
     //metodo para atualizar a posicao da snake
     public void SetPosition(Vector2 newPosition)
     {
-        view.DisplaySnake(newPosition);
+        view.DisplayView(newPosition);
     }
 
     public void Grow()

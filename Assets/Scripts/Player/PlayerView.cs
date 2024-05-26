@@ -3,7 +3,7 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class PlayerView : MonoBehaviour
+public class PlayerView : MonoBehaviour, IView
 {
     private PlayerModel model;              
     private static PlayerView instance;     
@@ -28,7 +28,7 @@ public class PlayerView : MonoBehaviour
     }
 
     // Atualiza a posição do jogador na interface do usuário.
-    public void DisplayPlayer(Vector2 newPosition)
+    public void DisplayView(Vector2 newPosition)
     {
         transform.position = newPosition;  
     }
