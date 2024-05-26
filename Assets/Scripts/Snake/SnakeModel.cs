@@ -1,11 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
 
 public class SnakeModel : MonoBehaviour
 {
-    public Vector2 gridSize; // Tamanho do grid
+    // public Vector2 gridSize; // Tamanho do grid
+    private GameGrid grid;
+
+
+
     public float moveSpeed = 1.0f; // Velocidade de movimento da snake
     private LinkedList<Vector2> snakeBodyPositions = new LinkedList<Vector2>(); // Lista das posições do corpo
     private Queue<Vector2> pathToFollow = new Queue<Vector2>(); // Caminho para seguir
@@ -18,7 +23,6 @@ public class SnakeModel : MonoBehaviour
     private static SnakeModel instance;
     private SnakeView view;
     private SnakeController controller;
-    private FoodController foodController; // Referência para o controlador da comida
 
     private void Awake()
     {
@@ -33,42 +37,28 @@ public class SnakeModel : MonoBehaviour
 
         view = GetComponent<SnakeView>();
         controller = GetComponent<SnakeController>();
-        foodController = FindObjectOfType<FoodController>(); // Encontra a instância do FoodController
     }
 
-    void Start()
+    public void InitializeSnake(object sender, object obj)
     {
-        InitializeSnake();
-        UpdatePathToFood(); // Calcula o caminho inicial até a comida
+        grid = GameGrid.getInstance();
+
+        // Vamos buscar a posicao inicial da snake na grid
+        Vector2 initialGridPosition = grid.occupiedCells["Snake"];
+        snakeBodyPositions.AddFirst(initialGridPosition);
+
+        CreateSnakeSprite(grid.CalculateMapPosition(initialGridPosition), true);
+        UpdatePathToFood();
     }
 
-    private void Update()
+    public void MoveTowardsTarget(object sender, object obj)
     {
-        MoveTowardsTarget();
-    }
-
-    private void InitializeSnake()
-    {
-        Vector2 initialPosition = new Vector2(gridSize.x / 2, gridSize.y / 2);
-        snakeBodyPositions.AddFirst(initialPosition);
-        CreateSnakeSprite(initialPosition, true);
-    }
-
-    private void MoveTowardsTarget()
-    {
-        if (Vector2.Distance(transform.position, currentTarget) < 0.1f)
+        if (pathToFollow.Count > 0)
         {
-            if (pathToFollow.Count > 0)
-            {
-                currentTarget = pathToFollow.Dequeue();
-                MoveSnake(currentTarget);
-            }
+            currentTarget = pathToFollow.Dequeue();
+            MoveSnake(currentTarget);
         }
-        else
-        {
-            transform.position = Vector2.MoveTowards(transform.position, currentTarget, moveSpeed * Time.deltaTime);
-        }
-    }
+     }
 
     public void MoveSnake(Vector2 newPosition)
     {
@@ -79,18 +69,24 @@ public class SnakeModel : MonoBehaviour
     {
         GameObject spriteObj = new GameObject("SnakePart");
         spriteObj.transform.position = position;
+        spriteObj.transform.SetParent(transform);
         SpriteRenderer renderer = spriteObj.AddComponent<SpriteRenderer>();
         renderer.sprite = isHead ? snakeHead : snakeImage;
-        snakeBodySprites.AddFirst(spriteObj);
+        renderer.tag = isHead ? "Snake" : $"Snake_Body_{transform.childCount + 1}";
+        
+        snakeBodySprites.AddLast(spriteObj);
     }
 
     private void UpdateSnakeBodyGraphics(Vector2 newPosition)
     {
-        snakeBodyPositions.AddFirst(newPosition);
-        GameObject oldTail = snakeBodySprites.Last.Value;
-        snakeBodySprites.RemoveLast();
-        oldTail.transform.position = newPosition;
-        snakeBodySprites.AddFirst(oldTail);
+        //snakeBodyPositions.AddFirst(newPosition);
+        //GameObject oldTail = snakeBodySprites.Last.Value;
+        //snakeBodySprites.RemoveLast();
+        //oldTail.transform.position = newPosition;
+        //snakeBodySprites.AddFirst(oldTail);
+
+        view.DisplaySnake(GameGrid.getInstance().ClampOnScreen(grid.CalculateMapPosition(newPosition)));
+        EventRegistry.GetEventPublisher("OnSnakeMove").RaiseEvent(controller);
     }
 
     public void GrowSnake()
@@ -102,14 +98,11 @@ public class SnakeModel : MonoBehaviour
 
     public void UpdatePathToFood()
     {
-        if (foodController != null)
-        {
-            Vector2 foodPosition = foodController.transform.position;
-            LinkedList<Vector2> path = FindPath(snakeBodyPositions.First.Value, foodPosition);
+            LinkedList<Vector2> path = FindPath(grid.occupiedCells["Snake"], grid.occupiedCells["Food"]);
+        
             pathToFollow = new Queue<Vector2>(path);
             if (pathToFollow.Count > 0)
                 currentTarget = pathToFollow.Dequeue();
-        }
     }
 
     public class PriorityQueue<T>
@@ -157,9 +150,14 @@ public class SnakeModel : MonoBehaviour
     private LinkedList<Vector2> FindPath(Vector2 start, Vector2 goal)
     {
         PriorityQueue<Vector2> openSet = new PriorityQueue<Vector2>();
+
         Dictionary<Vector2, Vector2> cameFrom = new Dictionary<Vector2, Vector2>();
+      
         Dictionary<Vector2, float> gScore = new Dictionary<Vector2, float> { [start] = 0 };
+        
         Dictionary<Vector2, float> fScore = new Dictionary<Vector2, float> { [start] = Heuristic(start, goal) };
+
+        List<Vector2> visited = new List<Vector2>();
 
         openSet.Enqueue(start, fScore[start]);
 
@@ -178,10 +176,11 @@ public class SnakeModel : MonoBehaviour
                     cameFrom[neighbor] = current;
                     gScore[neighbor] = tentativeGScore;
                     fScore[neighbor] = tentativeGScore + Heuristic(neighbor, goal);
-                    if (!openSet.Contains(neighbor))
+                    if (!openSet.Contains(neighbor) && !visited.Contains(neighbor))
                         openSet.Enqueue(neighbor, fScore[neighbor]);
                 }
             }
+            visited.Add(current);
         }
 
         return new LinkedList<Vector2>();
@@ -203,7 +202,12 @@ public class SnakeModel : MonoBehaviour
         {
             Vector2 neighbor = node + move;
             // Checa se a posição é válida e não está fora dos limites do grid
-            if (neighbor.x >= 0 && neighbor.x < gridSize.x && neighbor.y >= 0 && neighbor.y < gridSize.y)
+            if (
+                    neighbor.x >= 0 && 
+                    neighbor.x < grid.gridSize.x && 
+                    neighbor.y >= 0 && 
+                    neighbor.y < grid.gridSize.y
+                )
                 neighbors.Add(neighbor);
         }
 

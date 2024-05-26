@@ -19,7 +19,6 @@ public class GameMasterModel: MonoBehaviour
     [SerializeField] public Vector2 gridSize = Vector2.zero;
     [SerializeField] public Vector2 cellSize = Vector2.zero;
 
-    private Dictionary<string, Vector2> occupiedCells = new Dictionary<string, Vector2>();
 
     // Singleton
     private void Awake()
@@ -71,27 +70,29 @@ public class GameMasterModel: MonoBehaviour
     {
         Vector2 newGridPosition = grid.GetRandomGridPosition();
 
-        while (occupiedCells.ContainsValue(newGridPosition))
+        while (grid.occupiedCells.ContainsValue(newGridPosition))
         {
             newGridPosition = grid.GetRandomGridPosition();
         }
 
-        occupiedCells.Remove(objecto.tag);
-        occupiedCells.Add(objecto.tag, newGridPosition);
+        grid.occupiedCells.Remove(objecto.tag);
+        grid.occupiedCells.Add(objecto.tag, newGridPosition);
+        
+        var newWorldPosition = grid.CalculateMapPosition(newGridPosition);
 
-        if(objecto.CompareTag("Player"))
-            player.SetPosition(newGridPosition);
+        if (objecto.CompareTag("Player"))
+            player.SetPosition(newWorldPosition);
         else if(objecto.CompareTag("Snake"))
-            snake.SetPosition(newGridPosition);
+            snake.SetPosition(newWorldPosition);
         else if (objecto.CompareTag("Food"))
-            food.SetPosition(newGridPosition);
+            food.SetPosition(newWorldPosition);
     }
 
     // Metodo que troca a posição de um objecto
     public void SwitchOccupiedPosition(GameObject objecto)
     {
-        occupiedCells.Remove(objecto.tag);
-        occupiedCells.Add(objecto.tag, objecto.transform.position);
+        grid.occupiedCells.Remove(objecto.tag);
+        grid.occupiedCells.Add(objecto.tag, grid.CalculateGridCoordinates(objecto.transform.position));
     }
 
     public void AumentaPontuacao() { }

@@ -16,12 +16,6 @@ public class FoodController : MonoBehaviour
         }
         else
             Destroy(this);
-
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
         view = GetComponent<FoodView>();
         model = GetComponent<FoodModel>();
     }
