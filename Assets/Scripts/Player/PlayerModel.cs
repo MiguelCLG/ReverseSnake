@@ -40,7 +40,7 @@ public class PlayerModel : MonoBehaviour
     {
         if (!isAlive)
         {
-            return;  
+            return;
         }
 
         Vector2 newPosition = new Vector2(transform.position.x, transform.position.y) + direction;  
