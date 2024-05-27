@@ -198,4 +198,9 @@ public class SnakeModel : MonoBehaviour
         }
         return path;
     }
+
+    public Queue<Vector2> PathToFollow
+    {
+        get { return pathToFollow; }
+    }
 }
