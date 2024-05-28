@@ -128,7 +128,4 @@ public class GameMasterModel: MonoBehaviour
         }
         grid.occupiedCells.Add(grid.CalculateGridCoordinates(objecto.transform.position), objecto.tag);
     }
-
-    public void AumentaPontuacao() { }
-
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
@@ -8,7 +9,8 @@ public class PlayerModel : MonoBehaviour
     private PlayerView view;                    
     private PlayerController controller;       
     private bool isAlive = true;               
-    private int score = 0;                     
+    private int score = 0;
+    private int highScore = 0;
     private static PlayerModel instance;         
 
     // Inicialização do singleton para garantir uma única instância deste componente.
@@ -28,7 +30,8 @@ public class PlayerModel : MonoBehaviour
     public void Start()
     {
         view = GetComponent<PlayerView>();  
-        controller = GetComponent<PlayerController>();  
+        controller = GetComponent<PlayerController>();
+        highScore = SaveSystem.Load();
     }
 
    
@@ -50,6 +53,8 @@ public class PlayerModel : MonoBehaviour
         if (isAlive)
         {
             score += points;  
+            if(highScore < score)
+                highScore = score;
         }
     }
 
@@ -57,6 +62,11 @@ public class PlayerModel : MonoBehaviour
     public int GetScore()
     {
         return score;
+    }
+
+    public int GetHighScore()
+    {
+        return highScore;
     }
 
     // Define o estado do jogador para "morto".

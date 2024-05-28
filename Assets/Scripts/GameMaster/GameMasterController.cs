@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class GameMasterController: MonoBehaviour
 {
-
     private GameMasterModel model;
     private GameMasterView view;
     private static GameMasterController Instance { get; set; }
@@ -29,7 +28,8 @@ public class GameMasterController: MonoBehaviour
     {
         model = GetComponent<GameMasterModel>();
         view = GetComponent<GameMasterView>();
-
+        int savedHighScore = SaveSystem.Load();
+        view.DisplayNewScore(0, savedHighScore);
         StartGame();
     }
 
@@ -53,11 +53,17 @@ public class GameMasterController: MonoBehaviour
 
     private void RegisterEvents()
     {
+        EventRegistry.RegisterEvent("OnPlayerDeath");
+        EventSubscriber.SubscribeToEvent("OnPlayerDeath", OnPlayerDeath);
+
         EventRegistry.RegisterEvent("OnFoodEaten");
         EventSubscriber.SubscribeToEvent("OnFoodEaten", OnFoodEaten);
 
         EventRegistry.RegisterEvent("OnPlayerMove");
         EventSubscriber.SubscribeToEvent("OnPlayerMove", OnPlayerMove);
+        
+        EventRegistry.RegisterEvent("OnScoreIncrease");
+        EventSubscriber.SubscribeToEvent("OnScoreIncrease", OnScoreIncrease);
 
         EventRegistry.RegisterEvent("OnSnakeMove");
         EventSubscriber.SubscribeToEvent("OnSnakeMove", OnSnakeMove);
@@ -92,12 +98,29 @@ public class GameMasterController: MonoBehaviour
         }
     }
 
+    private void OnScoreIncrease(object sender, object obj)
+    {
+        if (obj is PlayerController player)
+        {
+            view.DisplayNewScore(player.GetScore(), player.GetHighScore());
+        }
+    }
+
+    private void OnPlayerDeath(object sender, object obj)
+    {
+        view.PlayerDied();
+    }
+
     public void OnQuit()
     {
         Debug.Log("Application quit!");
         Application.Quit();
     }
 
+    private void OnApplicationQuit()
+    {
+        SaveSystem.Save(FindObjectOfType<PlayerModel>().GetHighScore());
+    }
 
     // Quando o sistema operativo detecta que há pouca memoria disponivel o unity chama este metodo
     // Aqui podemos avisar o utilizador que pode perder o seu progresso
@@ -105,5 +128,4 @@ public class GameMasterController: MonoBehaviour
     {
         Debug.Log("OnLowMemory was Called!");
     }
-
 }
