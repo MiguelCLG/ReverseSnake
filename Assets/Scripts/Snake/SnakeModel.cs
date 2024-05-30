@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -63,7 +64,27 @@ public class SnakeModel : MonoBehaviour
             currentTarget = pathToFollow.Dequeue();
             MoveSnake(currentTarget);
         }
-     }
+        else
+        {
+            LinkedList<Vector2> path = FindPath(snakeBodyPositions.First(), grid.occupiedCells.FirstOrDefault((oc) => oc.Value == "Food").Key);
+            pathToFollow = new Queue<Vector2>(path);
+            if (pathToFollow.Count > 0)
+                currentTarget = pathToFollow.Dequeue();
+            MoveSnake(currentTarget);
+        }
+    }
+
+    private Vector2 CheckForEmptyNeighboor(Vector2 current)
+    {
+        var neighboors = GetNeighbors(current);
+        foreach (Vector2 neighboor in neighboors)
+        {
+            if (grid.occupiedCells.ContainsKey(neighboor) && grid.occupiedCells[neighboor].Equals("Snake"))
+                continue;
+            return neighboor;
+        }
+        return new Vector2();
+    }
 
     public void MoveSnake(Vector2 newPosition)
     {
@@ -155,8 +176,10 @@ public class SnakeModel : MonoBehaviour
             }
             visited.Add(current);
         }
-
-        return new LinkedList<Vector2>();
+        var path = new LinkedList<Vector2>();
+        path.AddFirst(start);
+        path.AddLast(CheckForEmptyNeighboor(start));
+        return path;
     }
 
 

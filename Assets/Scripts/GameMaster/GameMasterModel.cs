@@ -112,19 +112,40 @@ public class GameMasterModel: MonoBehaviour
                 {
                     grid.occupiedCells.Remove(newGridPosition);
                 }
-                grid.occupiedCells.Add(newGridPosition, "Snake");
+                else if (grid.occupiedCells.ContainsKey(newGridPosition) && grid.occupiedCells[newGridPosition] == "Player")
+                {
+                    grid.occupiedCells.Remove(newGridPosition);
+                }
+                try
+                {
+                    grid.occupiedCells.Add(newGridPosition, "Snake");
+                }
+                catch(Exception e) {
+                    Debug.LogWarning($"Ocorreu um erro a remover a ocupar uma celula! Exception: ${e.Message}");
+                }
             }
             return;
         }
 
         var tag = grid.occupiedCells.Where((e) => e.Value.Contains(objecto.tag)).Select(pair => pair.Key);
 
-        grid.occupiedCells.Remove(tag.Single());
+        try
+        {
+            grid.occupiedCells.Remove(tag.Single());
+        }
+        catch (Exception e)
+        {
+            Debug.LogWarning($"Ocorreu um erro a remover das celulas ocupadas! Exception: {e.Message}");
+        }
 
         var newPosition = grid.CalculateGridCoordinates(objecto.transform.position);
-        if (grid.occupiedCells.ContainsKey(newPosition) && grid.occupiedCells[newPosition] == "Food")
+        if (grid.occupiedCells.ContainsKey(newPosition) && grid.occupiedCells[newPosition] == "Food") // se algo colidir com a comida
         {
             grid.occupiedCells.Remove(newPosition);
+        }
+        else if(grid.occupiedCells.ContainsKey(newPosition) && grid.occupiedCells[newPosition] == "Snake" && objecto.tag == "Player") // Se o player colidir com a snake
+        {
+            return;
         }
         grid.occupiedCells.Add(grid.CalculateGridCoordinates(objecto.transform.position), objecto.tag);
     }

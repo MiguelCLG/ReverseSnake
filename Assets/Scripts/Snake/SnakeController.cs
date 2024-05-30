@@ -34,10 +34,11 @@ public class SnakeController : MonoBehaviour, IController
         EventSubscriber.SubscribeToEvent("OnPlayerMove", model.MoveTowardsTarget);
         EventSubscriber.SubscribeToEvent("OnGameMasterLoaded", model.InitializeSnake);
     }
-    // Update is called once per frame
-    void Update()
+    public void UnsubscribeEvents()
     {
-
+        EventSubscriber.UnsubscribeFromEvent("OnFoodEaten", OnFoodEaten);
+        EventSubscriber.UnsubscribeFromEvent("OnPlayerMove", model.MoveTowardsTarget);
+        EventSubscriber.UnsubscribeFromEvent("OnGameMasterLoaded", model.InitializeSnake);
     }
     //metodo para atualizar a posicao da snake
     public void SetPosition(Vector2 newPosition)

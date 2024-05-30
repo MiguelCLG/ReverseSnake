@@ -36,9 +36,6 @@ public class PlayerView : MonoBehaviour, IView
     // Exibe visualmente o estado de "morte" do jogador e notifica outros componentes.
     public void DisplayDeath()
     {
-        
-        Debug.Log("Player is dead");  
-        
         EventRegistry.GetEventPublisher("OnPlayerDeath").RaiseEvent(this);
     }
 }
