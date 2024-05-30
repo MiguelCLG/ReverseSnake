@@ -78,6 +78,7 @@ public class PlayerController : MonoBehaviour, IController
 
     // Retorna a pontuação atual do jogador
     public int GetScore() { return model.GetScore(); }
+    public int GetHighScore() { return model.GetHighScore(); }
 
     // Manipulador de evento para colisões do Unity
     private void OnTriggerEnter2D(Collider2D collision)

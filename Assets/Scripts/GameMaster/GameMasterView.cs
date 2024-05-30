@@ -9,6 +9,7 @@ public class GameMasterView: MonoBehaviour
     private GameMasterModel model;
     private static GameMasterView Instance;
     [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private TextMeshProUGUI highScoreText;
     [SerializeField] private GameObject gameOverPanel;
 
     private void Awake()
@@ -19,7 +20,6 @@ public class GameMasterView: MonoBehaviour
         }
         else
             Destroy(this);
-        RegisterEvents();
     }
 
     private void Start()
@@ -65,35 +65,19 @@ public class GameMasterView: MonoBehaviour
         }
     }
 
-    public void MostraJogo() { }
-    public void MostraEstado() { }
-
     public void CloseWindow()
     {
         gameOverPanel.SetActive(false);
     }
-    // Eventos
-
-    // Devemos registar os eventos de UI aqui, exemplo: player death screen ou high score counter
-    private void RegisterEvents()
-    {
-        EventRegistry.RegisterEvent("OnScoreIncrease");
-        EventSubscriber.SubscribeToEvent("OnScoreIncrease", OnScoreIncrease);
-
-        EventRegistry.RegisterEvent("OnPlayerDeath");
-        EventSubscriber.SubscribeToEvent("OnPlayerDeath", OnPlayerDeath);
-    }
-
+    
     // Metodo chamado quando o score aumenta
-    private void OnScoreIncrease(object sender, object obj) { 
-        if(obj is PlayerController player)
-        {
-            scoreText.text = $"Score: {player.GetScore()}";
-        }
+    public void DisplayNewScore(int newScore, int newHighScore) { 
+        scoreText.text = $"Score: {newScore}";
+        highScoreText.text = $"HighScore: {newHighScore}";
     }
 
     // Metodo chamado quando o player morre
-    private void OnPlayerDeath(object sender, object obj) {
+    public void PlayerDied() {
         gameOverPanel.SetActive(true);
     }
 }
