@@ -66,18 +66,6 @@ public class SnakeModel : MonoBehaviour
         }
     }
 
-    private Vector2 CheckForEmptyNeighboor(Vector2 current)
-    {
-        var neighboors = GetNeighbors(current);
-        foreach (Vector2 neighboor in neighboors)
-        {
-            if (grid.occupiedCells.ContainsKey(neighboor) && grid.occupiedCells[neighboor].Equals("Snake"))
-                continue;
-            return neighboor;
-        }
-        return new Vector2();
-    }
-
     public void MoveSnake(Vector2 newPosition)
     {
         UpdateSnakeBodyGraphics(newPosition);
