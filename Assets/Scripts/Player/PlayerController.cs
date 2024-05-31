@@ -35,7 +35,10 @@ public class PlayerController : MonoBehaviour, IController
     {
         EventSubscriber.SubscribeToEvent("OnFoodEaten", OnFoodEaten);
     }
-
+    public void UnsubscribeEvents()
+    {
+        EventSubscriber.UnsubscribeFromEvent("OnFoodEaten", OnFoodEaten);
+    }
     // Atualiza a cada frame
     public void Update()
     {
@@ -83,7 +86,6 @@ public class PlayerController : MonoBehaviour, IController
     // Manipulador de evento para colisões do Unity
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log($"Collisão com player: {collision.tag}");
         if (collision.CompareTag("Snake"))
         {
             PlayerDies();
@@ -96,7 +98,6 @@ public class PlayerController : MonoBehaviour, IController
         if (obj is GameObject gameObj && gameObj.tag == "Player")
         {
             PlayerEatsFood(model.scoreToAdd);
-            Debug.Log($"Player: OnFoodEaten was called by {gameObj.tag}");
         }
     }
 }

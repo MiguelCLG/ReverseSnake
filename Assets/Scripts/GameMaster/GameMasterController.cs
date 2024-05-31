@@ -38,7 +38,8 @@ public class GameMasterController: MonoBehaviour
     // Chamado Quando o jogo recomeça
     public void Restart()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        UnsubscribeEvents();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     // Chamado quando o jogo Começa
@@ -70,6 +71,18 @@ public class GameMasterController: MonoBehaviour
 
         EventRegistry.RegisterEvent("OnGameMasterLoaded");
     }
+
+    private void UnsubscribeEvents()
+    {
+        EventSubscriber.UnsubscribeFromEvent("OnPlayerDeath", OnPlayerDeath);
+        EventSubscriber.UnsubscribeFromEvent("OnFoodEaten", OnFoodEaten);
+        EventSubscriber.UnsubscribeFromEvent("OnPlayerMove", OnPlayerMove);
+        EventSubscriber.UnsubscribeFromEvent("OnScoreIncrease", OnScoreIncrease);
+        EventSubscriber.UnsubscribeFromEvent("OnSnakeMove", OnSnakeMove);
+        model.snake.UnsubscribeEvents();
+        model.player.UnsubscribeEvents();
+    }
+
     private void OnFoodEaten(object sender, object obj)
     {
         if (obj is GameObject gO)
@@ -79,7 +92,6 @@ public class GameMasterController: MonoBehaviour
             {
                 model.snake.Grow();
             }
-            Debug.Log($"GameMaster: OnFoodEaten was called by {gO.tag}");
         }
     }
 
@@ -87,7 +99,6 @@ public class GameMasterController: MonoBehaviour
     {
         if (obj is PlayerController playerController){
             model.SwitchOccupiedPosition(playerController.gameObject);
-            Debug.Log($"GameMaster: OnPlayerMove was called by {playerController.tag}");
         }
     }
     
@@ -113,7 +124,7 @@ public class GameMasterController: MonoBehaviour
 
     public void OnQuit()
     {
-        Debug.Log("Application quit!");
+        UnsubscribeEvents();
         Application.Quit();
     }
 
