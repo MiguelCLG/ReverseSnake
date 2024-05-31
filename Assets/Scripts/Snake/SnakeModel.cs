@@ -64,14 +64,6 @@ public class SnakeModel : MonoBehaviour
             currentTarget = pathToFollow.Dequeue();
             MoveSnake(currentTarget);
         }
-        else
-        {
-            LinkedList<Vector2> path = FindPath(snakeBodyPositions.First(), grid.occupiedCells.FirstOrDefault((oc) => oc.Value == "Food").Key);
-            pathToFollow = new Queue<Vector2>(path);
-            if (pathToFollow.Count > 0)
-                currentTarget = pathToFollow.Dequeue();
-            MoveSnake(currentTarget);
-        }
     }
 
     private Vector2 CheckForEmptyNeighboor(Vector2 current)
@@ -176,10 +168,7 @@ public class SnakeModel : MonoBehaviour
             }
             visited.Add(current);
         }
-        var path = new LinkedList<Vector2>();
-        path.AddFirst(start);
-        path.AddLast(CheckForEmptyNeighboor(start));
-        return path;
+        return new LinkedList<Vector2>();
     }
 
 
@@ -191,20 +180,19 @@ public class SnakeModel : MonoBehaviour
     private IEnumerable<Vector2> GetNeighbors(Vector2 node)
     {
         List<Vector2> neighbors = new List<Vector2>();
-        // Definição correta da variável:
         Vector2[] possibleMoves = { new Vector2(1, 0), new Vector2(-1, 0), new Vector2(0, 1), new Vector2(0, -1) };
 
-        foreach (Vector2 move in possibleMoves)  // Agora 'possibleMoves' está correto
+        foreach (Vector2 move in possibleMoves)
         {
             Vector2 neighbor = node + move;
-            // Checa se a posição é válida e não está fora dos limites do grid
-            if (
-                    neighbor.x >= 0 && 
-                    neighbor.x < grid.gridSize.x && 
-                    neighbor.y >= 0 && 
-                    neighbor.y < grid.gridSize.y
-                )
-                neighbors.Add(neighbor);
+
+            // Wrap around logic
+            if (neighbor.x < 0) neighbor.x = grid.gridSize.x - 1;
+            else if (neighbor.x >= grid.gridSize.x) neighbor.x = 0;
+            if (neighbor.y < 0) neighbor.y = grid.gridSize.y - 1;
+            else if (neighbor.y >= grid.gridSize.y) neighbor.y = 0;
+
+            neighbors.Add(neighbor);
         }
 
         return neighbors;
