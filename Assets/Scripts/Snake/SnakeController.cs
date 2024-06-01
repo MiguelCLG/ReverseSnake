@@ -46,6 +46,15 @@ public class SnakeController : MonoBehaviour, IController
         view.DisplayView(newPosition);
     }
 
+    public bool SnakeHasValidPath()
+    {
+        return model.PathToFollow.Count > 0;
+    }
+
+    public void CalculateValidPath()
+    {
+        model.UpdatePathToFood();
+    }
     public void Grow()
     {
         model.GrowSnake();

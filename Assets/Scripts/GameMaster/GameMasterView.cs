@@ -4,13 +4,13 @@ using System.Threading;
 using TMPro;
 using UnityEngine;
 
-public class GameMasterView: MonoBehaviour
+public class GameMasterView : MonoBehaviour
 {
     private GameMasterModel model;
     private static GameMasterView Instance;
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private TextMeshProUGUI highScoreText;
-    [SerializeField] private GameObject gameOverPanel;
+    [SerializeField] public GameObject gameOverPanel;
 
     private void Awake()
     {
@@ -69,15 +69,17 @@ public class GameMasterView: MonoBehaviour
     {
         gameOverPanel.SetActive(false);
     }
-    
+
     // Metodo chamado quando o score aumenta
-    public void DisplayNewScore(int newScore, int newHighScore) { 
+    public void DisplayNewScore(int newScore, int newHighScore)
+    {
         scoreText.text = $"Score: {newScore}";
         highScoreText.text = $"HighScore: {newHighScore}";
     }
 
     // Metodo chamado quando o player morre
-    public void PlayerDied() {
+    public void PlayerDied()
+    {
         gameOverPanel.SetActive(true);
     }
 }
