@@ -159,6 +159,22 @@ public class SnakeModel : MonoBehaviour
         return new LinkedList<Vector2>();
     }
 
+    // Metodo que recebe a nova e a posicao anterior
+    // E retorna o novo angulo para que a snake esteja a olhar para onde vai!
+    public float CalculateHeadRotation(Vector2 oldPosition, Vector2 newPosition)
+    {
+        // Calculate the differences in coordinates
+        float deltaX = newPosition.x - oldPosition.x;
+        float deltaY = newPosition.y - oldPosition.y;
+
+        // Calculate the angle in radians
+        float angleInRadians = Mathf.Atan2(deltaY, deltaX);
+
+        // Convert the angle to degrees
+        float angleInDegrees = angleInRadians * Mathf.Rad2Deg;
+
+        return angleInDegrees;
+    }
 
     private float Heuristic(Vector2 a, Vector2 b)
     {

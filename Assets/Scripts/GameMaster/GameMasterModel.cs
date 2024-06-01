@@ -76,6 +76,15 @@ public class GameMasterModel: MonoBehaviour
             newGridPosition = grid.GetRandomGridPosition();
         }
 
+        if (objecto.CompareTag("Food"))
+        {
+            while(grid.occupiedCells.ContainsKey(newGridPosition) && !snake.SnakeHasValidPath())
+            {
+                newGridPosition = grid.GetRandomGridPosition();
+                snake.CalculateValidPath();
+            }
+
+        }
         // try catch here please
         var objectInGrid = grid.occupiedCells.FirstOrDefault((oc) => oc.Value == objecto.tag);
         grid.occupiedCells.Remove(objectInGrid.Key);
